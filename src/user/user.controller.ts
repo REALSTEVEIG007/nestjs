@@ -43,6 +43,7 @@ export class UserController {
   }
 
   @Patch('user/:id')
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Body() user: Partial<User>,
     @Param('id') id: string,
@@ -57,6 +58,7 @@ export class UserController {
   }
 
   @Delete('user/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('id') id: string): Promise<void> {
     try {
       return this.userService.deleteUser(Number(id));

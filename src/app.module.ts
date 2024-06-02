@@ -13,7 +13,7 @@ import { AppService } from './app.service';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '',
+      password: '_sUITANGI1738',
       database: 'mynestdb',
       entities: [User],
       synchronize: true, // set to false in production
