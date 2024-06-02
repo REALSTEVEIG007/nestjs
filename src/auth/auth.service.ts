@@ -22,6 +22,10 @@ export class AuthService {
     return null;
   }
 
+  async validateUserById(id: number): Promise<User> {
+    return this.userService.findOne(id);
+  }
+
   async signup(signupDto: SignupDto): Promise<User> {
     const user = new User();
     user.username = signupDto.username;

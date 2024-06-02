@@ -7,15 +7,18 @@ import {
   Body,
   Param,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('users')
+  @UseGuards(JwtAuthGuard)
   async getAllUsers(@Request() req): Promise<User[]> {
     console.log('req: ', req.user);
 

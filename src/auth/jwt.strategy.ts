@@ -1,20 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
+import { AuthService } from './auth.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { UserService } from '../user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'your_jwt_secret',
+      secretOrKey: 'jwt_secret',
     });
   }
 
   async validate(payload: JwtPayload) {
-    return this.userService.findOne(payload.sub);
+    console.log('payload', payload);
+    try {
+      return this.authService.validateUserById(payload.sub);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        error.message || 'An internal server error occurred',
+      );
+    }
   }
 }
